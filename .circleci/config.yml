@@ -1,25 +1,14 @@
-version: 2
-jobs:
-  build:
-    working_directory: ~/letters-social
-    docker:
-      - image: circleci/node:8.5.0
-        environment:
-          NODE_ENV: development
-    steps:
-      - checkout
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-      - run:
-          name: install
-          command: npm install
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
-      - run:
-          name: test
-          command: npm test
-      - store_artifacts:
-          path: coverage
-          prefix: coverage
+# This config is equivalent to both the '.circleci/extended/orb-free.yml' and the base '.circleci/config.yml'
+version: 2.1
+
+orbs:
+  node: circleci/node@4.1
+
+workflows:
+  sample:
+    jobs:
+      - node/test:
+          version: '15.1'
+          # This is the node version to use for the `cimg/node` tag
+          # Relevant tags can be found on the CircleCI Developer Hub
+          # https://circleci.com/developer/images/image/cimg/node
